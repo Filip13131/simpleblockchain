@@ -1,4 +1,6 @@
-package datastructures;
+package datastructures.transaction;
+
+import util.StringUtil;
 
 import java.security.PublicKey;
 

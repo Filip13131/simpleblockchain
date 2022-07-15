@@ -1,7 +1,11 @@
-package datastructures;
+package datastructures.transaction;
+
+import datastructures.blockchain.Blockchain;
+import util.StringUtil;
 
 import java.security.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Transaction {
 
@@ -11,8 +15,10 @@ public class Transaction {
     public float value;
     public byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
 
-    public ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
-    public ArrayList<TransactionOutput> outputs = new ArrayList<TransactionOutput>();
+    public long timeStamp; //as number of milliseconds since 1/1/1970.
+
+    public ArrayList<TransactionInput> inputs;
+    public ArrayList<TransactionOutput> outputs = new ArrayList<>();
 
     private static int sequence = 0; // a rough count of how many transactions have been generated.
 
@@ -20,6 +26,7 @@ public class Transaction {
     public Transaction(PublicKey from, PublicKey to, float value,  ArrayList<TransactionInput> inputs) {
         this.sender = from;
         this.recipient = to;
+        this.timeStamp = new Date().getTime();
         this.value = value;
         this.inputs = inputs;
     }
@@ -30,7 +37,8 @@ public class Transaction {
         return StringUtil.applySha256(
                 StringUtil.getStringFromKey(sender) +
                         StringUtil.getStringFromKey(recipient) +
-                        Float.toString(value) + sequence
+                        Float.toString(value) + sequence +
+                        Long.toString(timeStamp)
         );
     }
     //Returns true if new transaction could be created.
@@ -96,7 +104,7 @@ public class Transaction {
                 + Float.toString(value);
         signature = StringUtil.applyECDSASig(privateKey,data);
     }
-    //Verifies the data we signed hasnt been tampered with
+    //Verifies the data we signed hasn't been tampered with
     public boolean verifySignature() {
         String data = StringUtil.getStringFromKey(sender)
                 + StringUtil.getStringFromKey(recipient)

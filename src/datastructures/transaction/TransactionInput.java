@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.transaction;
 
 public class TransactionInput {
     public String transactionOutputId; //Reference to TransactionOutputs -> transactionId

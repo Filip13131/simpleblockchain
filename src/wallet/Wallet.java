@@ -1,7 +1,12 @@
-package datastructures;
+package wallet;
+
+import datastructures.blockchain.Blockchain;
+import datastructures.transaction.Transaction;
+import datastructures.transaction.TransactionInput;
+import datastructures.transaction.TransactionOutput;
+import util.StringUtil;
 
 import java.security.*;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,30 +15,18 @@ public class Wallet {
 
     public PrivateKey privateKey;
     public PublicKey publicKey;
-    public HashMap<String,TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+    public HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+
     public Wallet(){
-        generateKeyPair();
+        KeyPair keyPair = StringUtil.generateKeyPair();
+        this.privateKey = keyPair.getPrivate();
+        this.publicKey = keyPair.getPublic();
     }
     public Wallet(PrivateKey privateKey, PublicKey publicKey){
         this.privateKey = privateKey;
         this.publicKey = publicKey;
     }
 
-    public void generateKeyPair() {
-        try {
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
-            // Initialize the key generator and generate a KeyPair
-            keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
-            KeyPair keyPair = keyGen.generateKeyPair();
-            // Set the public and private keys from the keyPair
-            privateKey = keyPair.getPrivate();
-            publicKey = keyPair.getPublic();
-        }catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
     public float getBalance() {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: Blockchain.UTXOs.entrySet()){
@@ -46,7 +39,7 @@ public class Wallet {
         return total;
     }
     //Generates and returns a new transaction from this wallet.
-    public Transaction sendFunds(PublicKey _recipient,float value ) {
+    public Transaction sendFunds(PublicKey _recipient, float value ) {
         if(getBalance() < value) { //gather balance and check funds.
             System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
             return null;
@@ -70,5 +63,6 @@ public class Wallet {
         }
         return newTransaction;
     }
+
 
 }

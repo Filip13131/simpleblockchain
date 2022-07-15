@@ -1,6 +1,8 @@
-package datastructures;
+package util;
 
+import datastructures.transaction.Transaction;
 import java.security.*;
+import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -80,5 +82,21 @@ public class StringUtil {
         Arrays.fill(c, '0');
         String result = new String(c);
         return result;
+    }
+
+    public static KeyPair generateKeyPair() {
+        try {
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
+            // Initialize the key generator and generate a KeyPair
+            keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
+            KeyPair keyPair = keyGen.generateKeyPair();
+            // Set the public and private keys from the keyPair
+            return keyPair;
+        }catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

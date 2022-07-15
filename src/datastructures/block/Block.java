@@ -1,5 +1,7 @@
-package datastructures;
+package datastructures.block;
 
+import util.StringUtil;
+import datastructures.transaction.Transaction;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ public class Block {
     public String hash;
     public String previousHash;
     public String merkleRoot;
-    public ArrayList<Transaction> transactions = new ArrayList<Transaction>(); //our data will be a simple message.
+    public ArrayList<Transaction> transactions = new ArrayList<>(); //our data will be a simple message.
     public long timeStamp; //as number of milliseconds since 1/1/1970.
     public int nonce;
 
