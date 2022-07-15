@@ -14,6 +14,10 @@ public class Wallet {
     public Wallet(){
         generateKeyPair();
     }
+    public Wallet(PrivateKey privateKey, PublicKey publicKey){
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+    }
 
     public void generateKeyPair() {
         try {
@@ -48,7 +52,7 @@ public class Wallet {
             return null;
         }
         //create array list of inputs
-        ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
+        ArrayList<TransactionInput> inputs = new ArrayList<>();
 
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: UTXOs.entrySet()){
