@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
@@ -19,7 +20,7 @@ public class PublicKeyAdapter extends TypeAdapter<PublicKey> {
         String KeyAsString = reader.nextString();
         try {
             return StringUtil.getKeyFromString(KeyAsString);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchProviderException e) {
             throw new RuntimeException(e);
         }
     }

@@ -97,10 +97,10 @@ public class StringUtil {
             throw new RuntimeException(e);
         }
     }
-    public static PublicKey getKeyFromString(String publicK) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static PublicKey getKeyFromString(String publicK) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         byte[] publicBytes = Base64.getDecoder().decode(publicK);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
         return keyFactory.generatePublic(keySpec);
     }
 }

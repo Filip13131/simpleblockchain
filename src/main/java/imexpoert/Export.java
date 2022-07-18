@@ -38,19 +38,25 @@ public class Export {
         System.out.println(getUTXOsAsJson(blockchain));
         System.out.println(blockchain.getBlockchain().get(0).getTransactions().get(0).getInputs());
         exportBlockchain(blockchain);
+        System.out.println("sdfghefjhsgjfaeryfgeargjhrajlhglkjahgjfhahgkahgjkhaklsjhgjrhgfdsajkghajgkhkjahgjkhakjghkjahgkjhdkajhglkjasdhgkljhakjgh" +
+                "lakga;gkjha;jg;akjg;lajgkljagljahjgadgjk");
+        System.out.println(Import.importJasonFromFile("savedBlockchains/savedBlockchain.json"));
+        ArrayList<Block> bc = Import.fromJasonToBlockchain();
+        System.out.println(bc);
+        System.out.println(new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(bc));
 
     }
 
-    public static void exportBlockchain( Blockchain blockchain) throws IOException {
+    public static void exportBlockchain( Blockchain blockchain ) throws IOException {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/testsavedBlockchain.json"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedBlockchain.json"));
             writer.write(getBlockchainAsJson(blockchain));
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/testsavedUTXOs.json"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedUTXOs.json"));
             writer.write(getUTXOsAsJson(blockchain));
             writer.close();
         } catch (IOException e) {
