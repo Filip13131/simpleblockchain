@@ -24,7 +24,7 @@ public class Blockchain {
         initializeBlockchain( addressOfGenesisTransaction , initialSupply);
     }
 
-    public Blockchain(){}
+    public Blockchain(){ }
 
     public void initializeBlockchain(PublicKey addressOfGenesisTransaction , float initialSupply) {
         //Setup Bouncey castle as a Security Provider
