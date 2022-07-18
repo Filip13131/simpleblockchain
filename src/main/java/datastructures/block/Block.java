@@ -42,7 +42,11 @@ public class Block {
 
     //Increases nonce value until hash target is reached.
     public void mineBlock(int difficulty) {
-        merkleRoot = StringUtil.getMerkleRoot(transactions);
+        ArrayList<String> transactionIds = new ArrayList<>();
+        for (Transaction transaction: transactions){
+            transactionIds.add(transaction.transactionId);
+        }
+        merkleRoot = StringUtil.getMerkleRoot(transactionIds);
         String target = StringUtil.getDifficultyString(difficulty); //Create a string with difficulty * "0"
         while(!hash.substring( 0, difficulty).equals(target)) {
             nonce ++;

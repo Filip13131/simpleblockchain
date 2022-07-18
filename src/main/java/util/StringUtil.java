@@ -1,7 +1,5 @@
 package util;
 
-import datastructures.transaction.Transaction;
-
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
@@ -59,11 +57,11 @@ public class StringUtil {
         return Base64.getEncoder().encodeToString(key.getEncoded());
     }
     //Tacks in array of transactions and returns a merkle root.
-    public static String getMerkleRoot(ArrayList<Transaction> transactions) {
-        int count = transactions.size();
+    public static String getMerkleRoot(ArrayList<String> transactionIds) {
+        int count = transactionIds.size();
         ArrayList<String> previousTreeLayer = new ArrayList<>(); // ids of an input
-        for(Transaction transaction : transactions) {
-            previousTreeLayer.add(transaction.transactionId);
+        for(String transactionId : transactionIds) {
+            previousTreeLayer.add(transactionId);
         }
         ArrayList<String> treeLayer = previousTreeLayer;
         while(count > 1) {
