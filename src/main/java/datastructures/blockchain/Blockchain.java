@@ -37,9 +37,9 @@ public class Blockchain {
         KeyPair firstSignature = StringUtil.generateKeyPair();
         setGenesisTransaction(new Transaction(firstSignature.getPublic(), addressOfGenesisTransaction, initialSupply, null));
         getGenesisTransaction().generateSignature(firstSignature.getPrivate());	 //manually sign the genesis transaction
-        getGenesisTransaction().transactionId = "0"; //manually set the transaction id
-        getGenesisTransaction().outputs.add(new TransactionOutput(getGenesisTransaction().recipient, getGenesisTransaction().value, getGenesisTransaction().transactionId)); //manually add the Transactions Output
-        getUTXOs().put(getGenesisTransaction().outputs.get(0).id, getGenesisTransaction().outputs.get(0)); //it's important to store our first transaction in the UTXOs list.
+        getGenesisTransaction().setTransactionId("0"); //manually set the transaction id
+        getGenesisTransaction().getOutputs().add(new TransactionOutput(getGenesisTransaction().getRecipient(), getGenesisTransaction().getValue(), getGenesisTransaction().getTransactionId())); //manually add the Transactions Output
+        getUTXOs().put(getGenesisTransaction().getOutputs().get(0).getId(), getGenesisTransaction().getOutputs().get(0)); //it's important to store our first transaction in the UTXOs list.
         //everything to do with the first block
                                                                                                     //System.out.println("Creating and Mining Genesis block... ");
         Block genesis = new Block("0");
@@ -55,7 +55,7 @@ public class Blockchain {
         Block previousBlock;
         String hashTarget = new String(new char[getDifficulty()]).replace('\0', '0');
         HashMap<String,TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
-        tempUTXOs.put(getGenesisTransaction().outputs.get(0).id, getGenesisTransaction().outputs.get(0));
+        tempUTXOs.put(getGenesisTransaction().getOutputs().get(0).getId(), getGenesisTransaction().getOutputs().get(0));
 
         //loop through blockchain to check hashes:
         for(int i = 1; i < getBlockchain().size(); i++) {
@@ -92,31 +92,31 @@ public class Blockchain {
                     return false;
                 }
 
-                for(TransactionInput input: currentTransaction.inputs) {
-                    tempOutput = tempUTXOs.get(input.transactionOutputId);
+                for(TransactionInput input: currentTransaction.getInputs()) {
+                    tempOutput = tempUTXOs.get(input.getTransactionOutputId());
 
                     if(tempOutput == null) {
                         System.out.println("#Referenced input on Transaction(" + t + ") is Missing");
                         return false;
                     }
 
-                    if(input.UTXO.value != tempOutput.value) {
+                    if(input.getUTXO().getValue() != tempOutput.getValue()) {
                         System.out.println("#Referenced input Transaction(" + t + ") value is Invalid");
                         return false;
                     }
 
-                    tempUTXOs.remove(input.transactionOutputId);
+                    tempUTXOs.remove(input.getTransactionOutputId());
                 }
 
-                for(TransactionOutput output: currentTransaction.outputs) {
-                    tempUTXOs.put(output.id, output);
+                for(TransactionOutput output: currentTransaction.getOutputs()) {
+                    tempUTXOs.put(output.getId(), output);
                 }
 
-                if( currentTransaction.outputs.get(0).recipient != currentTransaction.recipient) {
+                if( currentTransaction.getOutputs().get(0).getRecipient() != currentTransaction.getRecipient()) {
                     System.out.println("#Transaction(" + t + ") output recipient is not who it should be");
                     return false;
                 }
-                if( currentTransaction.outputs.get(1).recipient != currentTransaction.sender) {
+                if( currentTransaction.getOutputs().get(1).getRecipient() != currentTransaction.getSender()) {
                     System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
                     return false;
                 }

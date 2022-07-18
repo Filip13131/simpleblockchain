@@ -19,7 +19,7 @@ public class Export {
         blockchain.mineAndAddBlock(block2);
         System.out.println(getBlockchainAsJson(blockchain));
         System.out.println(getUTXOsAsJson(blockchain));
-        System.out.println(blockchain.getBlockchain().get(0).transactions.get(0).inputs);
+        System.out.println(blockchain.getBlockchain().get(0).transactions.get(0).getInputs());
 
         exportBlockchain(blockchain);
 

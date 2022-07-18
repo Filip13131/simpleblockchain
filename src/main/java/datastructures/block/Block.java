@@ -45,7 +45,7 @@ public class Block {
     public void mineBlock(int difficulty) {
         ArrayList<String> transactionIds = new ArrayList<>();
         for (Transaction transaction: transactions){
-            transactionIds.add(transaction.transactionId);
+            transactionIds.add(transaction.getTransactionId());
         }
         merkleRoot = StringUtil.getMerkleRoot(transactionIds);
         String target = StringUtil.getDifficultyString(difficulty); //Create a string with difficulty * "0"

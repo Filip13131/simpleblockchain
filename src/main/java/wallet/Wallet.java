@@ -32,8 +32,8 @@ public class Wallet {
         for (Map.Entry<String, TransactionOutput> item: blockchain.getUTXOs().entrySet()){
             TransactionOutput UTXO = item.getValue();
             if(UTXO.isMine(getPublicKey())) { //if output belongs to me ( if coins belong to me )
-                getUTXOs().put(UTXO.id,UTXO); //add it to our list of unspent transactions.
-                total += UTXO.value ;
+                getUTXOs().put(UTXO.getId(),UTXO); //add it to our list of unspent transactions.
+                total += UTXO.getValue();
             }
         }
         return total;
@@ -50,8 +50,8 @@ public class Wallet {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: getUTXOs().entrySet()){
             TransactionOutput UTXO = item.getValue();
-            total += UTXO.value;
-            inputs.add(new TransactionInput(UTXO.id));
+            total += UTXO.getValue();
+            inputs.add(new TransactionInput(UTXO.getId()));
             if(total > value) break;
         }
 
@@ -59,7 +59,7 @@ public class Wallet {
         newTransaction.generateSignature(getPrivateKey());
 
         for(TransactionInput input: inputs){
-            getUTXOs().remove(input.transactionOutputId);
+            getUTXOs().remove(input.getTransactionOutputId());
         }
         return newTransaction;
     }

@@ -8,18 +8,19 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static util.StringUtil.getStringFromKey;
 
 
 public class Transaction {
-    public String transactionId; // this is also the hash of the transaction.
-    public PublicKey sender; // senders address/public key.
-    public PublicKey recipient; // Recipients address/public key.
-    public float value;
-    public byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
-    public long timeStamp; //as number of milliseconds since 1/1/1970.
-    public ArrayList<TransactionInput> inputs;
-    public ArrayList<TransactionOutput> outputs = new ArrayList<>();
-    private static int sequence = 0; // a rough count of how many transactions have been generated.
+    private String transactionId; // this is also the hash of the transaction.
+    private final PublicKey sender; // senders address/public key.
+    private final PublicKey recipient; // Recipients address/public key.
+    private final float value;
+    private byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
+    private final long timeStamp; //as number of milliseconds since 1/1/1970.
+    private final ArrayList<TransactionInput> inputs;
+    private ArrayList<TransactionOutput> outputs = new ArrayList<>();
+    private static int sequence; // a rough count of how many transactions have been generated.
 
     // Constructor:
     public Transaction(PublicKey from, PublicKey to, float value,  ArrayList<TransactionInput> inputs) {
@@ -48,12 +49,12 @@ public class Transaction {
         this.inputs = inputs;
     }
 
-    // This Calculates the transaction hash (which will be used as its Id)
+    // This Calculates the transaction hash (which will be used as its ID)
     private String calculateHash() {
         sequence++; //increase the sequence to avoid 2 identical transactions having the same hash
         return StringUtil.applySha256(
-                StringUtil.getStringFromKey(sender) +
-                        StringUtil.getStringFromKey(recipient) +
+                getStringFromKey(sender) +
+                        getStringFromKey(recipient) +
                         value + sequence +
                         timeStamp
         );
@@ -68,7 +69,7 @@ public class Transaction {
 
         //gather transaction inputs (Make sure they are unspent):
         for(TransactionInput i : inputs) {
-            i.UTXO = blockchain.getUTXOs().get(i.transactionOutputId);
+            i.setUTXO(blockchain.getUTXOs().get(i.getTransactionOutputId()));
         }
 
         //check if transaction is valid:
@@ -80,52 +81,73 @@ public class Transaction {
         //generate transaction outputs:
         float leftOver = getInputsValue() - value; //get value of inputs then the leftover change:
         transactionId = calculateHash();
-        outputs.add(new TransactionOutput( this.recipient, value,transactionId)); //send value to recipient
-        outputs.add(new TransactionOutput( this.sender, leftOver,transactionId)); //send the left over 'change' back to sender
+        outputs.add(new TransactionOutput(this.recipient, value, transactionId)); //send value to recipient
+        outputs.add(new TransactionOutput(this.sender, leftOver, transactionId)); //send the left over 'change' back to sender
 
         //add outputs to Unspent list
         for(TransactionOutput o : outputs) {
-            blockchain.getUTXOs().put(o.id , o);
+            blockchain.getUTXOs().put(o.getId(), o);
         }
 
         //remove transaction inputs from UTXO lists as spent:
         for(TransactionInput i : inputs) {
-            if(i.UTXO == null) continue; //if Transaction can't be found skip it
-            blockchain.getUTXOs().remove(i.UTXO.id);
+            if(i.getUTXO() == null) continue; //if Transaction can't be found skip it
+            blockchain.getUTXOs().remove(i.getUTXO().getId());
         }
 
         return true;
     }
-
     //returns sum of inputs(UTXOs) values
     public float getInputsValue() {
         float total = 0;
         for(TransactionInput i : inputs) {
-            if(i.UTXO == null) continue; //if Transaction can't be found skip it
-            total += i.UTXO.value;
+            if(i.getUTXO() == null) continue; //if Transaction can't be found skip it
+            total += i.getUTXO().getValue();
         }
         return total;
     }
-
     //returns sum of outputs:
     public float getOutputsValue() {
         float total = 0;
         for(TransactionOutput o : outputs) {
-            total += o.value;
+            total += o.getValue();
         }
         return total;
     }
     public void generateSignature(PrivateKey privateKey) {
-        String data = StringUtil.getStringFromKey(sender)
-                + StringUtil.getStringFromKey(recipient)
+        String data = getStringFromKey(sender)
+                + getStringFromKey(recipient)
                 + value;
-        signature = StringUtil.applyECDSASig(privateKey,data);
+        signature = StringUtil.applyECDSASig(privateKey, data);
     }
     //Verifies the data we signed hasn't been tampered with
     public boolean verifySignature() {
-        String data = StringUtil.getStringFromKey(sender)
-                + StringUtil.getStringFromKey(recipient)
+        String data = getStringFromKey(sender)
+                + getStringFromKey(recipient)
                 + value;
         return !StringUtil.verifyECDSASig(sender, data, signature);
+    }
+
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+    public PublicKey getSender() {
+        return sender;
+    }
+    public PublicKey getRecipient() {
+        return recipient;
+    }
+    public float getValue() {
+        return value;
+    }
+    public ArrayList<TransactionInput> getInputs() {
+        return inputs;
+    }
+    public ArrayList<TransactionOutput> getOutputs() {
+        return outputs;
     }
 }
