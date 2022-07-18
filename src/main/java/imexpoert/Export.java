@@ -3,6 +3,7 @@ package imexpoert;
 import com.google.gson.GsonBuilder;
 import datastructures.block.Block;
 import datastructures.blockchain.Blockchain;
+import util.PublicKeyAdapter;
 import util.StringUtil;
 
 import java.io.BufferedWriter;
@@ -42,10 +43,10 @@ public class Export {
 
     }
     private static String getBlockchainAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.blockchain);
+        return new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.blockchain);
     }
     private static String getUTXOsAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.UTXOs);
+        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.UTXOs);
     }
 
 

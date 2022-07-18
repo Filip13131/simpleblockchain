@@ -3,6 +3,8 @@ package util;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -59,10 +61,8 @@ public class StringUtil {
     //Tacks in array of transactions and returns a merkle root.
     public static String getMerkleRoot(ArrayList<String> transactionIds) {
         int count = transactionIds.size();
-        ArrayList<String> previousTreeLayer = new ArrayList<>(); // ids of an input
-        for(String transactionId : transactionIds) {
-            previousTreeLayer.add(transactionId);
-        }
+        // ids of an input
+        ArrayList<String> previousTreeLayer = new ArrayList<>(transactionIds);
         ArrayList<String> treeLayer = previousTreeLayer;
         while(count > 1) {
             treeLayer = new ArrayList<>();
@@ -96,5 +96,11 @@ public class StringUtil {
         }catch(Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    public static PublicKey getKeyFromString(String publicK) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] publicBytes = Base64.getDecoder().decode(publicK);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePublic(keySpec);
     }
 }

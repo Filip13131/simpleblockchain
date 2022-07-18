@@ -14,8 +14,6 @@ public class Transaction {
     public String transactionId; // this is also the hash of the transaction.
     public PublicKey sender; // senders address/public key.
     public PublicKey recipient; // Recipients address/public key.
-    public String senderAsString;
-    public String recipientAsString;
     public float value;
     public byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
     public long timeStamp; //as number of milliseconds since 1/1/1970.
@@ -30,8 +28,6 @@ public class Transaction {
         this.timeStamp = new Date().getTime();
         this.value = value;
         this.inputs = inputs;
-        this.senderAsString = StringUtil.getStringFromKey(from);
-        this.recipientAsString = StringUtil.getStringFromKey(to);
     }
     //Constructor for importing:
     public Transaction(PublicKey from,
@@ -50,8 +46,6 @@ public class Transaction {
         this.timeStamp = timeStamp;
         this.value = value;
         this.inputs = inputs;
-        this.senderAsString = StringUtil.getStringFromKey(from);
-        this.recipientAsString = StringUtil.getStringFromKey(to);
     }
 
     // This Calculates the transaction hash (which will be used as its Id)

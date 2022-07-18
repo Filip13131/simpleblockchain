@@ -1,10 +1,7 @@
 {
-  "c116ee576a84e98dcbf4550d31e019605116e3c689dc5247bba7d58f0c1fc3bf": {
-    "id": "c116ee576a84e98dcbf4550d31e019605116e3c689dc5247bba7d58f0c1fc3bf",
-    "recipient": {
-      "algorithm": "ECDSA",
-      "withCompression": false
-    },
+  "c428451daf97f03f24616aa81b523cd8a9cc4d72e7892010d42353b234b1d163": {
+    "id": "c428451daf97f03f24616aa81b523cd8a9cc4d72e7892010d42353b234b1d163",
+    "recipient": "MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEMEAaKA43tdGlXkq1hwnFpT6BbXSG0ue24e5crfhBFPmPn3xUYI0b3VAllD3mji2U",
     "value": 100.0,
     "parentTransactionId": "0"
   }
