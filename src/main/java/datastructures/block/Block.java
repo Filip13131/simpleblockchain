@@ -8,15 +8,15 @@ import java.util.Date;
 
 public class Block {
 
-    public String hash;
-    public String previousHash;
-    public String merkleRoot;
-    public ArrayList<Transaction> transactions = new ArrayList<>(); //our data will be a simple message.
-    public long timeStamp; //as number of milliseconds since 1/1/1970.
-    public int nonce;
+    private String hash;
+    private final String previousHash;
+    private String merkleRoot;
+    private ArrayList<Transaction> transactions = new ArrayList<>(); //our data will be a simple message.
+    private final long timeStamp; //as number of milliseconds since 1/1/1970.
+    private int nonce;
 
     //Block Constructor.
-    public Block(String previousHash ) {
+    public Block( String previousHash ) {
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
         this.hash = calculateHash(); //Making sure we do this after we set the other values.
@@ -71,4 +71,13 @@ public class Block {
         return true;
     }
 
+    public String getHash() {
+        return hash;
+    }
+    public String getPreviousHash() {
+        return previousHash;
+    }
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 }

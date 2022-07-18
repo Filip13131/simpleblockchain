@@ -31,8 +31,8 @@ public class Wallet {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: blockchain.getUTXOs().entrySet()){
             TransactionOutput UTXO = item.getValue();
-            if(UTXO.isMine(getPublicKey())) { //if output belongs to me ( if coins belong to me )
-                getUTXOs().put(UTXO.getId(),UTXO); //add it to our list of unspent transactions.
+            if(UTXO.isMine(publicKey)) { //if output belongs to me ( if coins belong to me )
+                UTXOs.put(UTXO.getId(),UTXO); //add it to our list of unspent transactions.
                 total += UTXO.getValue();
             }
         }
@@ -48,30 +48,24 @@ public class Wallet {
         ArrayList<TransactionInput> inputs = new ArrayList<>();
 
         float total = 0;
-        for (Map.Entry<String, TransactionOutput> item: getUTXOs().entrySet()){
+        for (Map.Entry<String, TransactionOutput> item: UTXOs.entrySet()){
             TransactionOutput UTXO = item.getValue();
             total += UTXO.getValue();
             inputs.add(new TransactionInput(UTXO.getId()));
             if(total > value) break;
         }
 
-        Transaction newTransaction = new Transaction(getPublicKey(), _recipient , value, inputs);
-        newTransaction.generateSignature(getPrivateKey());
+        Transaction newTransaction = new Transaction(publicKey, _recipient , value, inputs);
+        newTransaction.generateSignature(privateKey);
 
         for(TransactionInput input: inputs){
-            getUTXOs().remove(input.getTransactionOutputId());
+            UTXOs.remove(input.getTransactionOutputId());
         }
         return newTransaction;
     }
 
-
-    private PrivateKey getPrivateKey() {
-        return privateKey;
-    }
     public PublicKey getPublicKey() {
         return publicKey;
     }
-    private HashMap<String, TransactionOutput> getUTXOs() {
-        return UTXOs;
-    }
+
 }

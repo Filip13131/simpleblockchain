@@ -18,12 +18,12 @@ public class BlockchainExplorer {
     }
     public static void printOutTransactionsIncludedInABlock(Block block){
 
-        System.out.println(new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(block.transactions));
+        System.out.println(new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(block.getTransactions()));
     }
     public static void printOutBlockDetailsByBlockHash(Blockchain blockchain, String hash){
         Block blockToPrint = null;
         for (Block block : blockchain.getBlockchain()){
-            if (!block.hash.equals(hash)){
+            if (!block.getHash().equals(hash)){
                 continue;
             }
             blockToPrint=block;
