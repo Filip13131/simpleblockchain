@@ -34,8 +34,7 @@ public class StringUtil {
             dsa.initSign(privateKey);
             byte[] strByte = input.getBytes();
             dsa.update(strByte);
-            byte[] realSig = dsa.sign();
-            output = realSig;
+            output = dsa.sign();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -73,15 +72,15 @@ public class StringUtil {
             count = treeLayer.size();
             previousTreeLayer = treeLayer;
         }
-        String merkleRoot = (treeLayer.size() == 1) ? treeLayer.get(0) : "";
+        String merkleRoot;
+        merkleRoot = (treeLayer.size() == 1) ? treeLayer.get(0) : "";
         return merkleRoot;
     }
 
     public static String getDifficultyString(int difficulty) {
         char[] c = new char[difficulty];
         Arrays.fill(c, '0');
-        String result = new String(c);
-        return result;
+        return new String(c);
     }
 
     public static KeyPair generateKeyPair() {
@@ -92,9 +91,8 @@ public class StringUtil {
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
             // Initialize the key generator and generate a KeyPair
             keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
-            KeyPair keyPair = keyGen.generateKeyPair();
             // Set the public and private keys from the keyPair
-            return keyPair;
+            return keyGen.generateKeyPair();
         }catch(Exception e) {
             throw new RuntimeException(e);
         }

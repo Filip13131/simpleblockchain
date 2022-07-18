@@ -3,23 +3,24 @@ package datastructures.transaction;
 import datastructures.blockchain.Blockchain;
 import util.StringUtil;
 
-import java.security.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Transaction {
 
+
+public class Transaction {
     public String transactionId; // this is also the hash of the transaction.
     public PublicKey sender; // senders address/public key.
     public PublicKey recipient; // Recipients address/public key.
+    public String senderAsString;
+    public String recipientAsString;
     public float value;
     public byte[] signature; // this is to prevent anybody else from spending funds in our wallet.
-
     public long timeStamp; //as number of milliseconds since 1/1/1970.
-
     public ArrayList<TransactionInput> inputs;
     public ArrayList<TransactionOutput> outputs = new ArrayList<>();
-
     private static int sequence = 0; // a rough count of how many transactions have been generated.
 
     // Constructor:
@@ -29,6 +30,28 @@ public class Transaction {
         this.timeStamp = new Date().getTime();
         this.value = value;
         this.inputs = inputs;
+        this.senderAsString = StringUtil.getStringFromKey(from);
+        this.recipientAsString = StringUtil.getStringFromKey(to);
+    }
+    //Constructor for importing:
+    public Transaction(PublicKey from,
+                       PublicKey to,
+                       float value,
+                       ArrayList<TransactionInput> inputs,
+                       ArrayList<TransactionOutput> outputs,
+                       byte[] signature,
+                       String transactionId,
+                       long timeStamp){
+        this.sender = from;
+        this.recipient = to;
+        this.outputs = outputs;
+        this.signature = signature;
+        this.transactionId = transactionId;
+        this.timeStamp = timeStamp;
+        this.value = value;
+        this.inputs = inputs;
+        this.senderAsString = StringUtil.getStringFromKey(from);
+        this.recipientAsString = StringUtil.getStringFromKey(to);
     }
 
     // This Calculates the transaction hash (which will be used as its Id)
@@ -37,14 +60,14 @@ public class Transaction {
         return StringUtil.applySha256(
                 StringUtil.getStringFromKey(sender) +
                         StringUtil.getStringFromKey(recipient) +
-                        Float.toString(value) + sequence +
-                        Long.toString(timeStamp)
+                        value + sequence +
+                        timeStamp
         );
     }
     //Returns true if new transaction could be created.
     public boolean processTransaction() {
 
-        if(verifySignature() == false) {
+        if(verifySignature()) {
             System.out.println("#Transaction Signature failed to verify");
             return false;
         }
@@ -101,14 +124,14 @@ public class Transaction {
     public void generateSignature(PrivateKey privateKey) {
         String data = StringUtil.getStringFromKey(sender)
                 + StringUtil.getStringFromKey(recipient)
-                + Float.toString(value);
+                + value;
         signature = StringUtil.applyECDSASig(privateKey,data);
     }
     //Verifies the data we signed hasn't been tampered with
     public boolean verifySignature() {
         String data = StringUtil.getStringFromKey(sender)
                 + StringUtil.getStringFromKey(recipient)
-                + Float.toString(value);
-        return StringUtil.verifyECDSASig(sender, data, signature);
+                + value;
+        return !StringUtil.verifyECDSASig(sender, data, signature);
     }
 }

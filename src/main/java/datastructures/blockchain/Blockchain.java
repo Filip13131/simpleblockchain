@@ -19,11 +19,11 @@ public class Blockchain {
     public static int difficulty = 3;
     public static float minimumTransaction = 0.1f;
     public static Transaction genesisTransaction;
-
+//Constructor:
     public Blockchain (PublicKey addressOfGenesisTransaction , float initialSupply){
         initializeBlockchain( addressOfGenesisTransaction , initialSupply);
     }
-
+//Constructor for Importing:
     public Blockchain(){ }
 
     public void initializeBlockchain(PublicKey addressOfGenesisTransaction , float initialSupply) {
@@ -39,7 +39,9 @@ public class Blockchain {
         //everything to do with the first block
                                                                                                     //System.out.println("Creating and Mining Genesis block... ");
         Block genesis = new Block("0");
-        genesis.addTransaction(genesisTransaction);
+        if (!genesis.addTransaction(genesisTransaction)){
+            System.out.println("initializeBlockchain invalid");
+        }
         mineAndAddBlock(genesis);
         System.out.println(isChainValid());
     }
@@ -77,7 +79,7 @@ public class Blockchain {
             for(int t=0; t <currentBlock.transactions.size(); t++) {
                 Transaction currentTransaction = currentBlock.transactions.get(t);
 
-                if(!currentTransaction.verifySignature()) {
+                if(currentTransaction.verifySignature()) {
                     System.out.println("#Signature on Transaction(" + t + ") is Invalid");
                     return false;
                 }

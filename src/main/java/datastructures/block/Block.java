@@ -18,8 +18,16 @@ public class Block {
     public Block(String previousHash ) {
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
-
         this.hash = calculateHash(); //Making sure we do this after we set the other values.
+    }
+    // Constructor for importing
+    public Block (String hash, String previousHash, String merkleRoot, ArrayList<Transaction> transactions, long timeStamp, int nonce ){
+        this.hash = hash;
+        this.previousHash = previousHash;
+        this.merkleRoot = merkleRoot;
+        this.transactions = transactions;
+        this.timeStamp = timeStamp;
+        this.nonce = nonce;
     }
 
     //Calculate new hash based on blocks contents
