@@ -33,4 +33,5 @@ public class TransactionOutput {
     public float getValue() {
         return value;
     }
+
 }

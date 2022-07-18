@@ -30,24 +30,7 @@ public class Transaction {
         this.value = value;
         this.inputs = inputs;
     }
-    //Constructor for importing:
-    public Transaction(PublicKey from,
-                       PublicKey to,
-                       float value,
-                       ArrayList<TransactionInput> inputs,
-                       ArrayList<TransactionOutput> outputs,
-                       byte[] signature,
-                       String transactionId,
-                       long timeStamp){
-        this.sender = from;
-        this.recipient = to;
-        this.outputs = outputs;
-        this.signature = signature;
-        this.transactionId = transactionId;
-        this.timeStamp = timeStamp;
-        this.value = value;
-        this.inputs = inputs;
-    }
+
 
     // This Calculates the transaction hash (which will be used as its ID)
     private String calculateHash() {

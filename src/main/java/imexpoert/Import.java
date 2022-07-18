@@ -3,6 +3,7 @@ package imexpoert;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import datastructures.block.Block;
+import datastructures.transaction.TransactionOutput;
 import util.PublicKeyAdapter;
 
 import java.io.IOException;
@@ -11,22 +12,22 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Import {
 
 
-
-    public static ArrayList<Block> fromJasonToBlockchain(){
-
-
+    public static HashMap<String, TransactionOutput> fromJsonToUTXOs(String json){
+        return null;
+    }
+    public static ArrayList<Block> fromJsonToBlockchain(String json){
         ArrayList<Block> blockchain;
-
         blockchain = new GsonBuilder()
                 .setPrettyPrinting()
                 .serializeNulls()
                 .registerTypeAdapter(PublicKey.class, new PublicKeyAdapter())
                 .create()
-                .fromJson(importJasonFromFile("savedBlockchains/savedBlockchain.json" ), new TypeToken<ArrayList<Block>>(){}.getType());
+                .fromJson( json , new TypeToken<ArrayList<Block>>(){}.getType() );
         return blockchain;
     }
 

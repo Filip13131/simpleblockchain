@@ -15,6 +15,8 @@ import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
+import static imexpoert.Import.importJasonFromFile;
+
 public class Export {
     public static void main (String[] args) throws IOException {
         KeyPair kp = StringUtil.generateKeyPair();
@@ -40,14 +42,14 @@ public class Export {
         exportBlockchain(blockchain);
         System.out.println("sdfghefjhsgjfaeryfgeargjhrajlhglkjahgjfhahgkahgjkhaklsjhgjrhgfdsajkghajgkhkjahgjkhakjghkjahgkjhdkajhglkjasdhgkljhakjgh" +
                 "lakga;gkjha;jg;akjg;lajgkljagljahjgadgjk");
-        System.out.println(Import.importJasonFromFile("savedBlockchains/savedBlockchain.json"));
-        ArrayList<Block> bc = Import.fromJasonToBlockchain();
+        System.out.println(importJasonFromFile("savedBlockchains/savedBlockchain.json"));
+        ArrayList<Block> bc = Import.fromJsonToBlockchain(importJasonFromFile("savedBlockchains/savedBlockchain.json"));
         System.out.println(bc);
         System.out.println(new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(bc));
 
     }
 
-    public static void exportBlockchain( Blockchain blockchain ) throws IOException {
+    public static void exportBlockchain( Blockchain blockchain ) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedBlockchain.json"));
             writer.write(getBlockchainAsJson(blockchain));
