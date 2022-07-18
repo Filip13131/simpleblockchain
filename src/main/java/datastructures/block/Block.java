@@ -34,8 +34,8 @@ public class Block {
     public String calculateHash() {
         return StringUtil.applySha256(
                 previousHash +
-                        Long.toString(timeStamp) +
-                        Integer.toString(nonce) +
+                        timeStamp +
+                        nonce +
                         merkleRoot
         );
     }

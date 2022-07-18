@@ -50,7 +50,7 @@ public class Blockchain {
         Block currentBlock;
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
-        HashMap<String,TransactionOutput> tempUTXOs = new HashMap<String,TransactionOutput>(); //a temporary working list of unspent transactions at a given block state.
+        HashMap<String,TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
         tempUTXOs.put(genesisTransaction.outputs.get(0).id, genesisTransaction.outputs.get(0));
 
         //loop through blockchain to check hashes:
@@ -74,7 +74,7 @@ public class Blockchain {
                 return false;
             }
 
-            //loop thru blockchains transactions:
+            //loop through blockchains transactions:
             TransactionOutput tempOutput;
             for(int t=0; t <currentBlock.transactions.size(); t++) {
                 Transaction currentTransaction = currentBlock.transactions.get(t);
@@ -109,7 +109,7 @@ public class Blockchain {
                 }
 
                 if( currentTransaction.outputs.get(0).recipient != currentTransaction.recipient) {
-                    System.out.println("#Transaction(" + t + ") output reciepient is not who it should be");
+                    System.out.println("#Transaction(" + t + ") output recipient is not who it should be");
                     return false;
                 }
                 if( currentTransaction.outputs.get(1).recipient != currentTransaction.sender) {
@@ -129,7 +129,4 @@ public class Blockchain {
         blockchain.add(newBlock);
     }
 
-    public static void addBlock(Block newBlock){
-        blockchain.add(newBlock);
-    }
 }
