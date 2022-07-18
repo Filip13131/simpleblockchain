@@ -15,11 +15,11 @@ public class Export {
     public static void main (String[] args) throws IOException {
         PublicKey num = StringUtil.generateKeyPair().getPublic();
         Blockchain blockchain = new Blockchain(num, 100);
-        Block block2 = new Block(blockchain.blockchain.get(0).hash);
+        Block block2 = new Block(blockchain.getBlockchain().get(0).hash);
         blockchain.mineAndAddBlock(block2);
         System.out.println(getBlockchainAsJson(blockchain));
         System.out.println(getUTXOsAsJson(blockchain));
-        System.out.println(blockchain.blockchain.get(0).transactions.get(0).inputs);
+        System.out.println(blockchain.getBlockchain().get(0).transactions.get(0).inputs);
 
         exportBlockchain(blockchain);
 
@@ -43,10 +43,10 @@ public class Export {
 
     }
     private static String getBlockchainAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.blockchain);
+        return new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.getBlockchain());
     }
     private static String getUTXOsAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.UTXOs);
+        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.getUTXOs());
     }
 
 

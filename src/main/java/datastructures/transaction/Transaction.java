@@ -59,7 +59,7 @@ public class Transaction {
         );
     }
     //Returns true if new transaction could be created.
-    public boolean processTransaction() {
+    public boolean processTransaction(Blockchain blockchain) {
 
         if(verifySignature()) {
             System.out.println("#Transaction Signature failed to verify");
@@ -68,11 +68,11 @@ public class Transaction {
 
         //gather transaction inputs (Make sure they are unspent):
         for(TransactionInput i : inputs) {
-            i.UTXO = Blockchain.UTXOs.get(i.transactionOutputId);
+            i.UTXO = blockchain.getUTXOs().get(i.transactionOutputId);
         }
 
         //check if transaction is valid:
-        if(getInputsValue() < Blockchain.minimumTransaction) {
+        if(getInputsValue() < blockchain.getMinimumTransaction()) {
             System.out.println("#Transaction Inputs to small: " + getInputsValue());
             return false;
         }
@@ -85,13 +85,13 @@ public class Transaction {
 
         //add outputs to Unspent list
         for(TransactionOutput o : outputs) {
-            Blockchain.UTXOs.put(o.id , o);
+            blockchain.getUTXOs().put(o.id , o);
         }
 
         //remove transaction inputs from UTXO lists as spent:
         for(TransactionInput i : inputs) {
             if(i.UTXO == null) continue; //if Transaction can't be found skip it
-            Blockchain.UTXOs.remove(i.UTXO.id);
+            blockchain.getUTXOs().remove(i.UTXO.id);
         }
 
         return true;

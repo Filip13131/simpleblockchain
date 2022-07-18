@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class Wallet {
 
-    public PrivateKey privateKey;
-    public PublicKey publicKey;
-    public HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+    private final PrivateKey privateKey;
+    private final PublicKey publicKey;
+    private HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 
     public Wallet(){
         KeyPair keyPair = StringUtil.generateKeyPair();
@@ -27,20 +27,20 @@ public class Wallet {
         this.publicKey = publicKey;
     }
 
-    public float getBalance() {
+    public float getBalance(Blockchain blockchain) {
         float total = 0;
-        for (Map.Entry<String, TransactionOutput> item: Blockchain.UTXOs.entrySet()){
+        for (Map.Entry<String, TransactionOutput> item: blockchain.getUTXOs().entrySet()){
             TransactionOutput UTXO = item.getValue();
-            if(UTXO.isMine(publicKey)) { //if output belongs to me ( if coins belong to me )
-                UTXOs.put(UTXO.id,UTXO); //add it to our list of unspent transactions.
+            if(UTXO.isMine(getPublicKey())) { //if output belongs to me ( if coins belong to me )
+                getUTXOs().put(UTXO.id,UTXO); //add it to our list of unspent transactions.
                 total += UTXO.value ;
             }
         }
         return total;
     }
     //Generates and returns a new transaction from this wallet.
-    public Transaction sendFunds(PublicKey _recipient, float value ) {
-        if(getBalance() < value) { //gather balance and check funds.
+    public Transaction sendFunds(PublicKey _recipient, float value , Blockchain blockchain) {
+        if(getBalance(blockchain) < value) { //gather balance and check funds.
             System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
             return null;
         }
@@ -48,21 +48,30 @@ public class Wallet {
         ArrayList<TransactionInput> inputs = new ArrayList<>();
 
         float total = 0;
-        for (Map.Entry<String, TransactionOutput> item: UTXOs.entrySet()){
+        for (Map.Entry<String, TransactionOutput> item: getUTXOs().entrySet()){
             TransactionOutput UTXO = item.getValue();
             total += UTXO.value;
             inputs.add(new TransactionInput(UTXO.id));
             if(total > value) break;
         }
 
-        Transaction newTransaction = new Transaction(publicKey, _recipient , value, inputs);
-        newTransaction.generateSignature(privateKey);
+        Transaction newTransaction = new Transaction(getPublicKey(), _recipient , value, inputs);
+        newTransaction.generateSignature(getPrivateKey());
 
         for(TransactionInput input: inputs){
-            UTXOs.remove(input.transactionOutputId);
+            getUTXOs().remove(input.transactionOutputId);
         }
         return newTransaction;
     }
 
 
+    private PrivateKey getPrivateKey() {
+        return privateKey;
+    }
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+    private HashMap<String, TransactionOutput> getUTXOs() {
+        return UTXOs;
+    }
 }

@@ -1,5 +1,6 @@
 package datastructures.block;
 
+import datastructures.blockchain.Blockchain;
 import util.StringUtil;
 import datastructures.transaction.Transaction;
 import java.util.ArrayList;
@@ -56,11 +57,11 @@ public class Block {
     }
 
     //Add transactions to this block
-    public boolean addTransaction(Transaction transaction) {
+    public boolean addTransaction(Transaction transaction, Blockchain blockchain) {
         //process transaction and check if valid, unless block is genesis block then ignore.
         if(transaction == null) return false;
         if((!previousHash.equals("0"))) {
-            if((!transaction.processTransaction())) {
+            if((!transaction.processTransaction(blockchain))) {
                 System.out.println("Transaction failed to process. Discarded.");
                 return false;
             }
