@@ -37,15 +37,14 @@ public class Export {
         block3.addTransaction(transaction, blockchain);
         blockchain.mineAndAddBlock(block3);
         System.out.println(getBlockchainAsJson(blockchain));
-        System.out.println(getUTXOsAsJson(blockchain));
         System.out.println(blockchain.getBlockchain().get(0).getTransactions().get(0).getInputs());
         exportBlockchain(blockchain);
         System.out.println("sdfghefjhsgjfaeryfgeargjhrajlhglkjahgjfhahgkahgjkhaklsjhgjrhgfdsajkghajgkhkjahgjkhakjghkjahgkjhdkajhglkjasdhgkljhakjgh" +
                 "lakga;gkjha;jg;akjg;lajgkljagljahjgadgjk");
         System.out.println(importJasonFromFile("savedBlockchains/savedBlockchain.json"));
-        ArrayList<Block> bc = Import.fromJsonToBlockchain(importJasonFromFile("savedBlockchains/savedBlockchain.json"));
-        System.out.println(bc);
-        System.out.println(new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(bc));
+        Blockchain newBlockchain = Import.fromJsonToBlockchain(importJasonFromFile("savedBlockchains/savedBlockchain.json"));
+        System.out.println("sfdgftygakfhgajhfgkjahsfkjhakjfhkjashfkjhasfkjhaskjfhaksjhfkjhsafkjfhaksjhfkjashfkjhaskjfhksajhfkjhaskjfhsakjhfkjsahfksajhfksjafhsa");
+        System.out.println(new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(newBlockchain));
 
     }
 
@@ -57,21 +56,12 @@ public class Export {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedUTXOs.json"));
-            writer.write(getUTXOsAsJson(blockchain));
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
     private static String getBlockchainAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.getBlockchain());
+        return new GsonBuilder().setPrettyPrinting().serializeNulls().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain);
     }
-    private static String getUTXOsAsJson(Blockchain blockchain){
-        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(PublicKey.class, new PublicKeyAdapter()).create().toJson(blockchain.getUTXOs());
-    }
+
 
 
 }

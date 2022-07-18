@@ -23,6 +23,12 @@ public class Blockchain {
     public Blockchain (PublicKey addressOfGenesisTransaction , float initialSupply){
         initializeBlockchain( addressOfGenesisTransaction , initialSupply);
     }
+//Constructor for Importing:
+    public Blockchain(ArrayList<Block> blockchain, HashMap<String, TransactionOutput> UTXOs){
+        this.blockchain = blockchain;
+        this.UTXOs = UTXOs;
+        this.genesisTransaction = blockchain.get(0).getTransactions().get(0);
+    }
 
     public void initializeBlockchain(PublicKey addressOfGenesisTransaction , float initialSupply) {
         //Setup Bouncey castle as a Security Provider
