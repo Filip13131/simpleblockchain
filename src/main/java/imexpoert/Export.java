@@ -5,10 +5,12 @@ import datastructures.block.Block;
 import datastructures.blockchain.Blockchain;
 import util.StringUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.PublicKey;
 
 public class Export {
-    public static void main (String args[]){
+    public static void main (String[] args) throws IOException {
         PublicKey num = StringUtil.generateKeyPair().getPublic();
         Blockchain blockchain = new Blockchain(num, 100);
         Block block2 = new Block(blockchain.blockchain.get(0).hash);
@@ -16,22 +18,19 @@ public class Export {
         System.out.println(getBlockchainAsJson(blockchain));
         System.out.println(getUTXOsAsJson(blockchain));
         System.out.println(blockchain.blockchain.get(0).transactions.get(0).inputs);
+
     }
 
-    public static void exportToPath(String path){
+    public static void exportToPath(String path, Blockchain blockchain) throws IOException {
+        File newBlockchainSave = new File(path+"save.json");
 
     }
     private static String getBlockchainAsJson(Blockchain blockchain){
-        String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.blockchain);
-        return blockchainJson;
+        return new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.blockchain);
     }
     private static String getUTXOsAsJson(Blockchain blockchain){
-        String UTXOsJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.UTXOs);
-        return UTXOsJson;
+        return new GsonBuilder().setPrettyPrinting().create().toJson(blockchain.UTXOs);
     }
-
-    private static String getMetaDataAsJson(Blockchain blockchain){ return ""; }
-
 
 
 }
