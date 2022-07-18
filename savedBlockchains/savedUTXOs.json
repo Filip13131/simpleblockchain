@@ -1,0 +1,11 @@
+{
+  "72b0e5976ae05ebb6e8f3eb806aab2001ed4c9f027de49894c47bc8701793ae1": {
+    "id": "72b0e5976ae05ebb6e8f3eb806aab2001ed4c9f027de49894c47bc8701793ae1",
+    "recipient": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    },
+    "value": 100.0,
+    "parentTransactionId": "0"
+  }
+}

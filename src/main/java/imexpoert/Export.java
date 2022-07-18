@@ -5,7 +5,8 @@ import datastructures.block.Block;
 import datastructures.blockchain.Blockchain;
 import util.StringUtil;
 
-import java.io.File;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.PublicKey;
 
@@ -19,10 +20,25 @@ public class Export {
         System.out.println(getUTXOsAsJson(blockchain));
         System.out.println(blockchain.blockchain.get(0).transactions.get(0).inputs);
 
+        exportBlockchain(blockchain);
+
     }
 
-    public static void exportToPath(String path, Blockchain blockchain) throws IOException {
-        File newBlockchainSave = new File(path+"save.json");
+    public static void exportBlockchain( Blockchain blockchain) throws IOException {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedBlockchain.json"));
+            writer.write(getBlockchainAsJson(blockchain));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("savedBlockchains/savedUTXOs.json"));
+            writer.write(getUTXOsAsJson(blockchain));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     private static String getBlockchainAsJson(Blockchain blockchain){
