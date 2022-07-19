@@ -1,5 +1,7 @@
 package util;
 
+import util.merkleTree.Node;
+
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
@@ -8,6 +10,8 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+
+import static util.merkleTree.MerkleTree.generateTree;
 
 public class StringUtil {
     //Applies Sha256 to a string and returns the result.
@@ -60,21 +64,8 @@ public class StringUtil {
     }
     //Tacks in array of transactions and returns a merkle root.
     public static String getMerkleRoot(ArrayList<String> transactionIds) {
-        int count = transactionIds.size();
-        // ids of an input
-        ArrayList<String> previousTreeLayer = new ArrayList<>(transactionIds);
-        ArrayList<String> treeLayer = previousTreeLayer;
-        while(count > 1) {
-            treeLayer = new ArrayList<>();
-            for(int i=1; i < previousTreeLayer.size(); i++) {
-                treeLayer.add(applySha256(previousTreeLayer.get(i-1) + previousTreeLayer.get(i)));
-            }
-            count = treeLayer.size();
-            previousTreeLayer = treeLayer;
-        }
-        String merkleRoot;
-        merkleRoot = (treeLayer.size() == 1) ? treeLayer.get(0) : "";
-        return merkleRoot;
+        Node root = generateTree(transactionIds);
+        return root.getHash();
     }
 
     public static String getDifficultyString(int difficulty) {
