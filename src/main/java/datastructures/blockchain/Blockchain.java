@@ -106,11 +106,11 @@ public class Blockchain {
                     tempUTXOs.put(output.getId(), output);
                 }
 
-                if( currentTransaction.getOutputs().get(0).getRecipient() != currentTransaction.getRecipient()) {
-                    System.out.println("#Transaction(" + t + ") output recipient is not who it should be");
-                    return false;
-                }
-                if( currentTransaction.getOutputs().get(1).getRecipient() != currentTransaction.getSender()) {
+                 if( ! currentTransaction.getOutputs().get(0).getRecipient().equals(currentTransaction.getRecipient())) {
+                    System.out.println("#Transaction( " + t +" in block " + currentBlock.getHash() + " ) output recipient is not who it should be");
+                     return false;
+                  }
+                 if( ! currentTransaction.getOutputs().get(1).getRecipient().equals(currentTransaction.getSender())) {
                     System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
                     return false;
                 }
