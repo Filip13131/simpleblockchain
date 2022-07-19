@@ -5,10 +5,10 @@ import util.StringUtil;
 import java.security.PublicKey;
 
 public class TransactionOutput {
-    private String id;
-    private PublicKey recipient; //also known as the new owner of these coins.
-    private float value; //the amount of coins they own
-    private String parentTransactionId; //the id of the transaction this output was created in
+    private final String id;
+    private final PublicKey recipient; //also known as the new owner of these coins.
+    private final float value; //the amount of coins they own
+    private final String parentTransactionId; //the id of the transaction this output was created in
 
     //Constructor
     public TransactionOutput(PublicKey recipient, float value, String parentTransactionId) {

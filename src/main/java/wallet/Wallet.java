@@ -16,6 +16,8 @@ public class Wallet {
     private final PrivateKey privateKey;
     private final PublicKey publicKey;
     private HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+    private ArrayList<Transaction> transactionHistory;
+    private int historyMarker = 0;
 
     public Wallet(){
         KeyPair keyPair = StringUtil.generateKeyPair();
@@ -26,7 +28,21 @@ public class Wallet {
         this.privateKey = privateKey;
         this.publicKey = publicKey;
     }
-
+    public void refreshTransactionHistory(Blockchain blockchain){
+        for (int i = historyMarker; i < blockchain.getBlockchain().size() ; i++){
+            ArrayList<Transaction> transactionsToCheck;
+            transactionsToCheck = blockchain.getBlockchain().get(i).getTransactions();
+            for (Transaction transaction : transactionsToCheck){
+                if (!transaction.getSender().equals(publicKey)){
+                    if (!transaction.getRecipient().equals(publicKey)){
+                        continue;
+                    }
+                }
+                transactionHistory.add(transaction);
+            }
+        }
+        historyMarker = blockchain.getBlockchain().size();
+    }
     public float getBalance(Blockchain blockchain) {
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item: blockchain.getUTXOs().entrySet()){
@@ -63,7 +79,10 @@ public class Wallet {
         }
         return newTransaction;
     }
-
+    public ArrayList<Transaction> getTransactionHistory(Blockchain blockchain){
+        refreshTransactionHistory(blockchain);
+        return transactionHistory;
+    }
     public PublicKey getPublicKey() {
         return publicKey;
     }
