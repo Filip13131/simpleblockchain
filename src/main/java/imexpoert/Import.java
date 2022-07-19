@@ -13,7 +13,13 @@ import java.security.PublicKey;
 
 public class Import {
 
-    public static Blockchain fromJsonToBlockchain(String json){
+    public static Blockchain fromJsonToBlockchain(String path){
+        String json = null;
+        try {
+            json = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Blockchain blockchain;
         blockchain = new GsonBuilder()
                 .setPrettyPrinting()
@@ -23,18 +29,5 @@ public class Import {
                 .fromJson( json , new TypeToken<Blockchain>(){}.getType() );
         return blockchain;
     }
-
-    public static String importJasonFromFile (String path){
-        String output = null;
-        try {
-            output = Files.readString(Paths.get(path), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return output;
-    }
-
-
-
 
 }
