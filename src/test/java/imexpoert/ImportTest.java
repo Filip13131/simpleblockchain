@@ -24,7 +24,6 @@ class ImportTest {
         Export.exportBlockchain(blockchainA);
         blockchainB = Import.importBlockchainFromPath("savedBlockchains/" + "savedBlockchain" + ".json");
         Assertions.assertEquals(blockchainA.hashCode(),blockchainB.hashCode());
-        //
     }
 
 }
