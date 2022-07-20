@@ -3,6 +3,7 @@ package datastructures.transaction;
 import util.StringUtil;
 
 import java.security.PublicKey;
+import java.util.Objects;
 
 public class TransactionOutput {
     private final String id;
@@ -33,5 +34,16 @@ public class TransactionOutput {
     public float getValue() {
         return value;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransactionOutput)) return false;
+        TransactionOutput that = (TransactionOutput) o;
+        return Float.compare(that.getValue(), getValue()) == 0 && Objects.equals(getId(), that.getId()) && Objects.equals(getRecipient(), that.getRecipient()) && Objects.equals(parentTransactionId, that.parentTransactionId);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getRecipient(), getValue(), parentTransactionId);
+    }
 }

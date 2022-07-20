@@ -10,13 +10,14 @@ import java.security.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Wallet {
 
     private final PrivateKey privateKey;
     private final PublicKey publicKey;
     private HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
-    private ArrayList<Transaction> transactionHistory;
+    private ArrayList<Transaction> transactionHistory = new ArrayList<>();
     private int historyMarker = 0;
 
     public Wallet(){
@@ -86,5 +87,29 @@ public class Wallet {
     public PublicKey getPublicKey() {
         return publicKey;
     }
+    public PrivateKey getPrivateKey() {
+        return privateKey;
+    }
+    public HashMap<String, TransactionOutput> getUTXOs() {
+        return UTXOs;
+    }
+    public ArrayList<Transaction> getTransactionHistory() {
+        return transactionHistory;
+    }
+    public int getHistoryMarker() {
+        return historyMarker;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Wallet)) return false;
+        Wallet wallet = (Wallet) o;
+        return getHistoryMarker() == wallet.getHistoryMarker() && getPrivateKey().equals(wallet.getPrivateKey()) && getPublicKey().equals(wallet.getPublicKey()) && Objects.equals(getUTXOs(), wallet.getUTXOs()) && Objects.equals(getTransactionHistory(), wallet.getTransactionHistory());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPrivateKey(), getPublicKey(), getUTXOs(), getTransactionHistory(), getHistoryMarker());
+    }
 }

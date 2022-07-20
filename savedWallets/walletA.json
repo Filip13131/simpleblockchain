@@ -1,7 +1,7 @@
 {
-  "privateKey": "MHsCAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQEEYTBfAgEBBBg+agck6IyAviTzykTMh3yRVG3Sukd5jh6gCgYIKoZIzj0DAQGhNAMyAAR/2Q3N0Pzi16JxJDc0HHx5EUvvtPzqbGPq7sW7suXczyjo1aetHJfGj3YQWQC47Zc\u003d",
-  "publicKey": "MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEf9kNzdD84teicSQ3NBx8eRFL77T86mxj6u7Fu7Ll3M8o6NWnrRyXxo92EFkAuO2X",
+  "privateKey": "MHsCAQAwEwYHKoZIzj0CAQYIKoZIzj0DAQEEYTBfAgEBBBiVtru7ECIeMLHe1gh+HLVoQDZr6vecjEagCgYIKoZIzj0DAQGhNAMyAATBLVi2RYDg2XJYMMM3LhW6UqHiYfkj0qdx+jSPwOByeDpQOj0sweRUmcOiKLDhr7w\u003d",
+  "publicKey": "MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEwS1YtkWA4NlyWDDDNy4VulKh4mH5I9Kncfo0j8Dgcng6UDo9LMHkVJnDoiiw4a+8",
   "UTXOs": {},
-  "transactionHistory": null,
+  "transactionHistory": [],
   "historyMarker": 0
 }

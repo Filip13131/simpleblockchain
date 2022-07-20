@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import datastructures.blockchain.Blockchain;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import util.typeAdapters.PrivateKeyAdapter;
 import util.typeAdapters.PublicKeyAdapter;
 import wallet.Wallet;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
 
@@ -28,6 +30,7 @@ public class Import {
         blockchain = new GsonBuilder()
                 .setPrettyPrinting()
                 .serializeNulls()
+                .registerTypeAdapter(PrivateKey.class, new PrivateKeyAdapter())
                 .registerTypeAdapter(PublicKey.class, new PublicKeyAdapter())
                 .create()
                 .fromJson( json , new TypeToken<Blockchain>(){}.getType() );
@@ -46,9 +49,10 @@ public class Import {
         wallet = new GsonBuilder()
                 .setPrettyPrinting()
                 .serializeNulls()
+                .registerTypeAdapter(PrivateKey.class, new PrivateKeyAdapter())
                 .registerTypeAdapter(PublicKey.class, new PublicKeyAdapter())
                 .create()
-                .fromJson( json , new TypeToken<Blockchain>(){}.getType() );
+                .fromJson( json , new TypeToken<Wallet>(){}.getType() );
         return wallet;
     }
 

@@ -6,7 +6,9 @@ import util.StringUtil;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 import static util.StringUtil.getStringFromKey;
 
@@ -42,6 +44,7 @@ public class Transaction {
                         timeStamp
         );
     }
+
     //Returns true if new transaction could be created.
     public boolean processTransaction(Blockchain blockchain) {
 
@@ -132,5 +135,20 @@ public class Transaction {
     }
     public ArrayList<TransactionOutput> getOutputs() {
         return outputs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transaction)) return false;
+        Transaction that = (Transaction) o;
+        return Float.compare(that.getValue(), getValue()) == 0 && timeStamp == that.timeStamp && Objects.equals(getTransactionId(), that.getTransactionId()) && Objects.equals(getSender(), that.getSender()) && Objects.equals(getRecipient(), that.getRecipient()) && Arrays.equals(signature, that.signature) && Objects.equals(getInputs(), that.getInputs()) && Objects.equals(getOutputs(), that.getOutputs());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(getTransactionId(), getSender(), getRecipient(), getValue(), timeStamp, getInputs(), getOutputs());
+        result = 31 * result + Arrays.hashCode(signature);
+        return result;
     }
 }

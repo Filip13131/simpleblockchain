@@ -5,6 +5,7 @@ import util.StringUtil;
 import datastructures.transaction.Transaction;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Block {
 
@@ -76,5 +77,18 @@ public class Block {
     }
     public String getMerkleRoot() {
         return merkleRoot;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Block)) return false;
+        Block block = (Block) o;
+        return getTimeStamp() == block.getTimeStamp() && nonce == block.nonce && Objects.equals(getHash(), block.getHash()) && Objects.equals(getPreviousHash(), block.getPreviousHash()) && Objects.equals(getMerkleRoot(), block.getMerkleRoot()) && Objects.equals(getTransactions(), block.getTransactions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHash(), getPreviousHash(), getMerkleRoot(), getTransactions(), getTimeStamp(), nonce);
     }
 }

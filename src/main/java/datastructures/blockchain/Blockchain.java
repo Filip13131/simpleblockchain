@@ -12,6 +12,7 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Blockchain {
     private ArrayList<Block> blockchain = new ArrayList<>();
@@ -135,5 +136,18 @@ public class Blockchain {
     }
     public float getMinimumTransaction() {
         return minimumTransaction;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Blockchain)) return false;
+        Blockchain that = (Blockchain) o;
+        return difficulty == that.difficulty && Float.compare(that.getMinimumTransaction(), getMinimumTransaction()) == 0 && Objects.equals(getBlockchain(), that.getBlockchain()) && Objects.equals(getUTXOs(), that.getUTXOs()) && Objects.equals(genesisTransaction, that.genesisTransaction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBlockchain(), getUTXOs(), difficulty, getMinimumTransaction(), genesisTransaction);
     }
 }
