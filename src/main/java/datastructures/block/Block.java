@@ -11,7 +11,7 @@ public class Block {
     private String hash;
     private final String previousHash;
     private String merkleRoot;
-    private ArrayList<Transaction> transactions = new ArrayList<>(); //our data will be a simple message.
+    private ArrayList<Transaction> transactions = new ArrayList<>();
     private final long timeStamp; //as number of milliseconds since 1/1/1970.
     private int nonce;
 
@@ -70,5 +70,11 @@ public class Block {
     }
     public ArrayList<Transaction> getTransactions() {
         return transactions;
+    }
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+    public String getMerkleRoot() {
+        return merkleRoot;
     }
 }

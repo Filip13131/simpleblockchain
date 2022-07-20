@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,10 +89,17 @@ public class StringUtil {
             throw new RuntimeException(e);
         }
     }
-    public static PublicKey getKeyFromString(String publicK) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+    public static PublicKey getPublicKeyFromString(String publicK) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         byte[] publicBytes = Base64.getDecoder().decode(publicK);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
         return keyFactory.generatePublic(keySpec);
     }
+    public static PrivateKey getPrivateKeyFromString (String privateK ) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+        byte[] publicBytes = Base64.getDecoder().decode(privateK);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(publicBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("ECDSA", "BC");
+        return keyFactory.generatePrivate(keySpec);
+    }
+
 }

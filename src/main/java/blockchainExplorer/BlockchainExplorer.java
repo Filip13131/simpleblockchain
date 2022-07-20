@@ -3,7 +3,7 @@ package blockchainExplorer;
 import com.google.gson.GsonBuilder;
 import datastructures.block.Block;
 import datastructures.blockchain.Blockchain;
-import util.PublicKeyAdapter;
+import util.typeAdapters.PublicKeyAdapter;
 
 import java.security.PublicKey;
 
