@@ -59,11 +59,14 @@ public class Transaction {
         }
 
         //check if transaction is valid:
-        if(getInputsValue() < blockchain.getMinimumTransaction()) {
+        if(getInputsValue() < value) {
             System.out.println("#Transaction Inputs to small: " + getInputsValue());
             return false;
         }
-
+        if (value < blockchain.getMinimumTransaction()){
+            System.out.println("Transaction is to small!!");
+            return false;
+        }
         //generate transaction outputs:
         float leftOver = getInputsValue() - value; //get value of inputs then the leftover change:
         transactionId = calculateHash();
