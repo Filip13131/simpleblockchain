@@ -261,11 +261,12 @@ public class Interface {
                 "3- Print out block by Block Hash -3",
                 "4- Print out block by Block Height -4",
                 "5- Print out the last block -5",
-                "6- exit -6"
+                "6- Blockchain validation -6",
+                "7- exit -7"
         };
         Scanner scanner = new Scanner(System.in);
         int option = 1;
-        while (option != 6) {
+        while (option != 7) {
             printMenu(options);
             try {
                 option = scanner.nextInt();
@@ -275,6 +276,7 @@ public class Interface {
                     case 3 -> printOutBlockByHash();
                     case 4 -> printOutBlockByHeight();
                     case 5 -> BlockchainExplorer.printOutLastBlockDetails(blockchain);
+                    case 6 -> blockchain.isChainValid();
                     case 8 -> exit(0);
                 }
             } catch (InputMismatchException ex) {
