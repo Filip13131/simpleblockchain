@@ -6,6 +6,7 @@ import datastructures.blockchain.Blockchain;
 import datastructures.transaction.Transaction;
 import imexpoert.Export;
 import imexpoert.Import;
+import targetDifficultyAssessment.TargetDifficultyAssessment;
 import util.StringUtil;
 import wallet.Wallet;
 
@@ -106,7 +107,8 @@ public class Interface {
                 "2- go to wallets -2",
                 "3- go to blockchain explorer -3",
                 "4- export -4",
-                "5- exit -5"};
+                "5- run Target Difficulty Assessment -5",
+                "6- exit -6"};
         Scanner scanner = new Scanner(System.in);
         int option = 1;
         while (option != 5) {
@@ -118,7 +120,8 @@ public class Interface {
                     case 2 -> walletsExplorer();
                     case 3 -> blockchainExplorer();
                     case 4 -> export();
-                    case 5 -> exit(0);
+                    case 5 -> TargetDifficultyAssessment.run(6, 10);
+                    case 6 -> exit(0);
                 }
             } catch (InputMismatchException ex) {
                 System.out.println("Please enter an integer value between 1 and " + options.length);

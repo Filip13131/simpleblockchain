@@ -65,6 +65,9 @@ public class StringUtil {
     }
     //Tacks in array of transactions and returns a merkle root.
     public static String getMerkleRoot(ArrayList<String> transactionIds) {
+        if (transactionIds.isEmpty()) {
+            return "";
+        }
         Node root = generateTree(transactionIds);
         return root.getHash();
     }
