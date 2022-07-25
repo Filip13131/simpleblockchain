@@ -111,7 +111,7 @@ public class Interface {
                 "6- exit -6"};
         Scanner scanner = new Scanner(System.in);
         int option = 1;
-        while (option != 5) {
+        while (option != 6) {
             printMenu(options);
             try {
                 option = scanner.nextInt();
@@ -120,7 +120,7 @@ public class Interface {
                     case 2 -> walletsExplorer();
                     case 3 -> blockchainExplorer();
                     case 4 -> export();
-                    case 5 -> TargetDifficultyAssessment.run(6, 10);
+                    case 5 -> targetDifficultyAssessment();
                     case 6 -> exit(0);
                 }
             } catch (InputMismatchException ex) {
@@ -312,6 +312,17 @@ public class Interface {
         Export.exportBlockchain(blockchain);
         for (int i=0 ; i<wallets.size(); i++) Export.exportWallet(wallets.get(i), "wallet" + i);
         System.out.println("Export succeeded!!!");
+    }
+
+    private static void targetDifficultyAssessment(){
+        int checkLimit;
+        System.out.println("enter check limit:");
+        Scanner scanner = new Scanner(System.in);
+        checkLimit = scanner.nextInt();
+        int accuracy;
+        System.out.println("enter accuracy");
+        accuracy = scanner.nextInt();
+        TargetDifficultyAssessment.run(checkLimit, accuracy);
     }
 
 }
